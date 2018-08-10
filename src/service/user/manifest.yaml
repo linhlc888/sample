@@ -1,0 +1,13 @@
+service:
+  name: user
+  path: user
+metadata:
+  flags:
+    rpc-bind:
+      type: String
+      value: '9009'
+      usage: port to bind rpc
+    http-bind:
+      type: String
+      value: '9019'
+      usage: port to bind http
