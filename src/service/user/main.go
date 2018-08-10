@@ -9,9 +9,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	userpbgw "github.com/linhlc888/sample/src/proto/gateway/user"
 	"github.com/linhlc888/sample/src/service/user/args"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"golang.org/x/net/context"
 
 	"google.golang.org/grpc"
@@ -81,4 +81,3 @@ func main() {
 	<-term
 	srv.GracefulStop()
 }
-
