@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# git clang-format pre-commit hook
+#
+# To use, store as .git/hooks/pre-commit inside your repository and make sure
+# it has execute permissions.
+
+if [ -z "$(which clang-format)" ]; then
+  echo "clang-format not found, if use OS X, please run: brew install clang-format"
+  exit 1
+fi
+
+# This script does not handle file names that contain spaces.
+protofiles=$(git diff --cached --name-only --diff-filter=ACM | grep '^proto/.*\.proto$')
+
+set -e
+for protofile in $protofiles
+do
+  clang-format -i -style=file $protofile
+  git add $protofile
+done

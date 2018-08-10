@@ -1,0 +1,56 @@
+project: sample-project
+package: github.com/linhlc888/sample
+createdAt: 2018-08-10T12:07:46.655Z
+metadata:
+  vars:
+    gcloudDocker: gcr.io/gokums
+  tasks:
+    build:
+      steps:
+        - cmd: go build -i -o ".build/<%=service.name%>" main.go
+    run:
+      steps:
+        - cmd: go build -i -o ".build/<%=service.name%>" main.go
+        - cmd:
+            - .build/<%=service.name%>
+            - '-http-bind=localhost:<%=tools.next(''http'',3001)%>'
+            - '-rpc-bind=localhost:<%=tools.next(''rpc'',13001)%>'
+      env:
+        environment: local
+    gcloud-push:
+      steps:
+        - cmd: >-
+            gcloud docker -- push
+            <%=vars.gcloudDocker%>/<%=service.name%>:<%=project.gitSHA%>
+config:
+  proto:
+    paths:
+      - proto/x/google.com/proto
+      - vendor/github.com/gokums/go-proto-validators
+    mappings:
+      validator.proto: github.com/gokums/go-proto-validators
+      google/api/annotations.proto: google.golang.org/genproto/googleapis/api/annotations
+    plugins:
+      - github.com/golang/protobuf/protoc-gen-go
+      - github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+      - github.com/gokums/go-proto-validators/protoc-gen-govalidators
+    genflags:
+      proto:
+        required:
+          - '--go_out=<%=mappings%>,plugins=grpc:<%=outDir%>'
+        optional:
+          val: '--govalidators_out=<%=mappings%>:<%=outDir%>'
+      gateway:
+        required:
+          - '--go_out=<%=mappings%>,plugins=grpc:<%=outDir%>'
+          - '--grpc-gateway_out=logtostderr=true:<%=outDir%>'
+        optional:
+          val: '--govalidators_out=<%=mappings%>:<%=outDir%>'
+          swag: '--swagger_out=<%=mappings%>:docs/swagger'
+  dirs:
+    proto: proto
+    gateway: proto/gateway
+    service: src/service
+    genproto: src/proto
+    gengateway: src/proto/gateway
+    bin: .bin

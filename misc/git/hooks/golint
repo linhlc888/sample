@@ -1,0 +1,42 @@
+#!/bin/bash
+# Copyright 2012 The Go Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+# git golint pre-commit hook
+#
+# To use, store as .git/hooks/pre-commit inside your repository and make sure
+# it has execute permissions.
+
+if [ -z "$(which golint)" ]; then
+  echo "golint not found, please run: go get github.com/golang/lint/golint"
+  exit 1
+fi
+
+# This script does not handle file names that contain spaces.
+gofiles=$(git diff --cached --name-only --diff-filter=ACM | grep '^src/.*\.go$')
+
+errors=
+
+# Run on one file at a time because a single invocation of golint
+# with multiple files requires the files to all be in one package.
+gofiles_with_warnings=()
+for gofile in $gofiles
+do
+  errcount=$(golint $gofile | wc -l)
+  if [ "$errcount" -gt "0" ]; then
+    errors=YES
+    echo "$errcount suggestions for:"
+    echo "golint $gofile"
+    gofiles_with_warnings+=($gofile)
+  fi
+done
+
+[ -z "$errors" ] && exit 0
+
+for gofile in "${gofiles_with_warnings[@]}"
+do
+  golint $gofile
+done
+
+exit 1
