@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS sample;
+CREATE TABLE IF NOT EXISTS `user` (
+    `uid` MEDIUMINT  NOT NULL AUTO_INCREMENT,
+    `fullname` VARCHAR(64) NULL,
+    `email` VARCHAR(64) NULL,
+    `password` VARCHAR(64) NULL,
+    `loginFailedCnt` INTEGER,
+    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     PRIMARY KEY (uid)
+);

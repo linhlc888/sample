@@ -12,6 +12,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	userpbgw "github.com/linhlc888/sample/src/proto/gateway/user"
 	"github.com/linhlc888/sample/src/service/user/args"
+	"github.com/linhlc888/sample/src/service/user/internal/rpc"
 	"golang.org/x/net/context"
 
 	"google.golang.org/grpc"
@@ -24,29 +25,13 @@ func init() {
 	flag.Parse()
 }
 
-type userService struct{}
-
-func (u *userService) Login(ctx context.Context, in *userpbgw.LoginRequest) (*userpbgw.Response, error) {
-	return &userpbgw.Response{
-		Error:   0,
-		Message: "Login",
-	}, nil
-}
-
-func (u *userService) Register(ctx context.Context, in *userpbgw.RegisterRequest) (*userpbgw.Response, error) {
-	return &userpbgw.Response{
-		Error:   0,
-		Message: "Register",
-	}, nil
-}
-
 func main() {
 
 	httpLoc := fmt.Sprintf(":%s", *args.HTTPBind)
 	rpcLoc := fmt.Sprintf(":%s", *args.RPCBind)
 	//init grpc server
 	srv := grpc.NewServer()
-	userpbgw.RegisterUserServiceServer(srv, new(userService))
+	userpbgw.RegisterUserServiceServer(srv, new(rpc.UserService))
 	lis, err := net.Listen("tcp", rpcLoc)
 	if err != nil {
 		log.Fatalf("failed to listen rpc: %v", err)
@@ -75,6 +60,7 @@ func main() {
 			log.Fatalf("failed to listen and serve http: %v", err)
 		}
 	}()
+	fmt.Printf("listening at %s port.", *args.HTTPBind)
 
 	term := make(chan os.Signal)
 	signal.Notify(term, syscall.SIGTERM)
