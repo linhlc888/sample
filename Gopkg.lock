@@ -8,6 +8,12 @@
   revision = "4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9"
 
 [[projects]]
+  name = "github.com/go-sql-driver/mysql"
+  packages = ["."]
+  revision = "d523deb1b23d913de5bdada721a6071e71283618"
+  version = "v1.4.0"
+
+[[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
     "proto",
@@ -21,6 +27,8 @@
   name = "github.com/gokums/core"
   packages = [
     ".",
+    "log",
+    "log/mask",
     "net/httpx"
   ]
   revision = "1a3eef191d4e1f41811e280ae626467c6004f7a9"
@@ -40,6 +48,7 @@
 [[projects]]
   name = "github.com/golang/protobuf"
   packages = [
+    "jsonpb",
     "proto",
     "protoc-gen-go/descriptor",
     "protoc-gen-go/generator",
@@ -47,6 +56,7 @@
     "ptypes",
     "ptypes/any",
     "ptypes/duration",
+    "ptypes/struct",
     "ptypes/timestamp"
   ]
   revision = "925541529c1fa6821df4e44ce2723319eb2be768"
@@ -60,6 +70,8 @@
     "protoc-gen-grpc-gateway/generator",
     "protoc-gen-grpc-gateway/gengateway",
     "protoc-gen-grpc-gateway/httprule",
+    "runtime",
+    "runtime/internal",
     "utilities"
   ]
   revision = "07f5e79768022f9a3265235f0db4ac8c3f675fec"
@@ -109,6 +121,15 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/crypto"
+  packages = [
+    "bcrypt",
+    "blowfish"
+  ]
+  revision = "de0752318171da717af4ce24d0a2e8626afaeb11"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -141,6 +162,12 @@
     "unicode/rangetable"
   ]
   revision = "4e4a3210bb54bb31f6ab2cdca2edcc0b50c420c1"
+
+[[projects]]
+  name = "google.golang.org/appengine"
+  packages = ["cloudsql"]
+  revision = "b1f26356af11148e710935ed1ac8a7f5702c7612"
+  version = "v1.1.0"
 
 [[projects]]
   branch = "master"
@@ -183,6 +210,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "bb89e4767f384d97c327c37d9d439dd1778405e5ebb6e41d9ff09eab12a0b162"
+  inputs-digest = "6055c0c1425faf939e77906012602de9fbcc62f8648f9be0a89dfeb6b7ee3cf5"
   solver-name = "gps-cdcl"
   solver-version = 1
