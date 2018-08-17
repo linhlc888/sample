@@ -79,6 +79,9 @@ func CheckExistingEmail(email string) (bool, error) {
 	defer stmt.Close()
 	var emailFromDB []byte
 	err = stmt.QueryRow(email).Scan(&emailFromDB)
+	if err == sql.ErrNoRows {
+		return false, nil
+	}
 	if err != nil {
 		return false, err
 	}

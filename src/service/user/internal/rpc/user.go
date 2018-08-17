@@ -1,6 +1,8 @@
 package rpc
 
 import (
+	"fmt"
+
 	userpbgw "github.com/linhlc888/sample/src/proto/gateway/user"
 	"github.com/linhlc888/sample/src/service/user/model/user"
 	"golang.org/x/net/context"
@@ -20,14 +22,12 @@ func (u *UserService) Login(ctx context.Context, in *userpbgw.LoginRequest) (*us
 //Register allow user register new account
 func (u *UserService) Register(ctx context.Context, in *userpbgw.RegisterRequest) (*userpbgw.Response, error) {
 	isExisted, err := user.CheckExistingEmail(in.Email)
-	/*
-		if err != nil {
-			return &userpbgw.Response{
-				Error:   2222,
-				Message: fmt.Sprintf("Error: %s", err),
-			}, nil
-		}
-	*/
+	if err != nil {
+		return &userpbgw.Response{
+			Error:   2222,
+			Message: fmt.Sprintf("Error: %s", err),
+		}, nil
+	}
 	if isExisted {
 		return &userpbgw.Response{
 			Error:   2222,
