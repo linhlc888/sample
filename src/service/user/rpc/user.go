@@ -13,9 +13,22 @@ type UserService struct{}
 
 //Login allow user login with register email and password
 func (u *UserService) Login(ctx context.Context, in *userpbgw.LoginRequest) (*userpbgw.Response, error) {
+	ok, err := user.CheckLogin(in.Email, in.Password)
+	if err != nil {
+		return &userpbgw.Response{
+			Error:   2222,
+			Message: fmt.Sprintf("Error: %s", err),
+		}, nil
+	}
+	if ok {
+		return &userpbgw.Response{
+			Error:   0,
+			Message: "Login successful",
+		}, nil
+	}
 	return &userpbgw.Response{
 		Error:   0,
-		Message: "Login",
+		Message: "Login failed",
 	}, nil
 }
 

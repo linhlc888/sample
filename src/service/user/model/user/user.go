@@ -56,6 +56,9 @@ func CheckLogin(email string, password string) (bool, error) {
 	defer stmt.Close()
 	var fullname, emailFromDB, passwordFromDB []byte
 	err = stmt.QueryRow(email).Scan(&fullname, &emailFromDB, &passwordFromDB)
+	if err == sql.ErrNoRows {
+		return false, nil
+	}
 	if err != nil {
 		return false, err
 	}
