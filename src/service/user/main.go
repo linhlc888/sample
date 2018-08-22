@@ -12,7 +12,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	userpbgw "github.com/linhlc888/sample/src/proto/gateway/user"
 	"github.com/linhlc888/sample/src/service/user/args"
-	"github.com/linhlc888/sample/src/service/user/internal/rpc"
+	"github.com/linhlc888/sample/src/service/user/rpc"
 	"golang.org/x/net/context"
 
 	"google.golang.org/grpc"
