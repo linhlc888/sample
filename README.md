@@ -1,19 +1,54 @@
-# Gok (boiler)
+## Introduction
 
-## Gok Introduction
+This is sample service using [gokums-cli](https://github.com/gokums/cli) to generate boiler template.
 
-`Gok` is a command line based tool to allow [Golang](https://golang.org) developers to create a `project`, within which `golang` services and gateways can be written and configured for deployment to Google's Cloud Platform ([GCP](https://cloud.google.com)), specifically [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/).
+There are two main funcions allows user login and register information.
 
-The intention is to consolidate [Kubernetes](https://kubernetes.io) configuration for services into a single convention. The aim is to encourage teams to use a single convention to increase productivity and decrease learning curve for new team members.
+## Clone and install dependency packages
 
-## Boiler Introduction
+```
+mkdir -p $GOPATH/src/github.com/linhlc888/
 
-This repo defines the implementation for the `boiler` subsystem of Gok.
-This repo is used as the template for new projects when they are created using the `gok g <project_pathname>` command.
+cd $GOPATH/src/github.com/linhlc888/
 
-*NOTE:*
-This `README.md` will be copied to your new project, so you should replace with your contents before initial commit to GitHub (or you Git repository of choice).
+git clone https://github.com/linhlc888/sample.git
+cd sample
+dep ensure
+```
 
-## User Guide and end-user installation
+## Start service
 
-Please refer to the [CLI](https://github.com/gokums/cli) repo.
+```
+cd src/service/user
+docker-compose up
+```
+
+## Test functions
+
+### Register new user
+
+```
+curl -X POST \
+  http://localhost:9019/v1/user/register \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"fullname":"test user",
+	"email": "test@gmail.com",
+	"password":"123455"
+	
+}'
+```
+### Login with email and password
+
+```
+curl -X POST \
+  http://localhost:9019/v1/user/login \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"email": "test@gmail.com",
+	"password":"123455"
+	
+}'
+```
